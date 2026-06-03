@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="assets/images/profile.png" width="90" height="90" style="border-radius: 50%;" alt="BookNest Logo"/>
+<img src="assets/images/ic_launcher.png" width="90" height="90" style="border-radius: 50%;" alt="BookNest Logo"/>
 
 # BookNest
 
