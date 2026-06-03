@@ -1,0 +1,323 @@
+import 'package:flutter/material.dart';
+import '../data/hive_service.dart';
+import '../models/book_model.dart';
+import '../theme/app_theme.dart';
+import '../theme/app_mode.dart';
+import 'book_detail_screen.dart';
+
+class CategoryDetailScreen extends StatefulWidget {
+  final String category;
+  const CategoryDetailScreen({super.key, required this.category});
+
+  @override
+  State<CategoryDetailScreen> createState() => _CategoryDetailScreenState();
+}
+
+class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
+  List<BookModel> _books = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  void _loadData() {
+    setState(() {
+      _books = HiveService.getBooksByCategory(widget.category);
+    });
+  }
+
+  Future<void> _toggleFav(String bookId) async {
+    await HiveService.toggleFavorite(bookId);
+    _loadData();
+  }
+
+  void _goToDetail(BookModel book) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => BookDetailScreen(bookId: book.id)),
+    ).then((_) => _loadData());
+  }
+
+  Widget _readListenTag(BookModel book) {
+    final hasRead = book.readFormat.isNotEmpty;
+    final hasListen = book.hasAudio;
+    if (!hasRead && !hasListen) return const SizedBox.shrink();
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+      decoration: BoxDecoration(
+        color: Colors.black.withValues(alpha: 0.72),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          if (hasRead) ...[
+            const Icon(Icons.menu_book, color: Colors.white, size: 14),
+            if (hasListen) const SizedBox(height: 4),
+          ],
+          if (hasListen)
+            const Icon(Icons.headphones, color: Colors.white, size: 14),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = themeModeNotifier.isDark;
+    final bg = isDark ? AppColors.darkBackground : AppColors.lightBackground;
+    final textColor = isDark ? AppColors.darkText : AppColors.lightText;
+    final subText = isDark ? AppColors.darkSubText : AppColors.lightSubText;
+
+    return Scaffold(
+      backgroundColor: bg,
+      body: CustomScrollView(
+        slivers: [
+          //  AppBar
+          SliverAppBar(
+            pinned: true,
+            backgroundColor: isDark
+                ? AppColors.darkBackground
+                : AppColors.lightBackground,
+            leading: GestureDetector(
+              onTap: () => Navigator.pop(context),
+              child: Icon(Icons.arrow_back_ios_new, color: textColor, size: 20),
+            ),
+            title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  widget.category,
+                  style: TextStyle(
+                    fontFamily: 'Playfair',
+                    fontWeight: AppFontWeights.bold,
+                    fontSize: AppFontSizes.lg,
+                    color: textColor,
+                  ),
+                ),
+                Text(
+                  '${_books.length} book${_books.length != 1 ? 's' : ''}',
+                  style: TextStyle(
+                    fontSize: AppFontSizes.xs,
+                    color: subText,
+                    fontWeight: AppFontWeights.regular,
+                  ),
+                ),
+              ],
+            ),
+            actions: [
+              GestureDetector(
+                onTap: () {
+                  themeModeNotifier.toggleTheme();
+                  setState(() {});
+                },
+                child: Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: CircleAvatar(
+                    radius: 16,
+                    backgroundColor: AppColors.primary.withValues(alpha: 0.2),
+                    child: Icon(
+                      isDark ? Icons.light_mode : Icons.dark_mode,
+                      color: AppColors.primary,
+                      size: 16,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 12)),
+
+          //  Empty State
+          if (_books.isEmpty)
+            SliverFillRemaining(
+              child: Center(
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.menu_book_outlined,
+                      size: 64,
+                      color: subText.withValues(alpha: 0.4),
+                    ),
+                    const SizedBox(height: 12),
+                    Text(
+                      'No books in ${widget.category}',
+                      style: TextStyle(
+                        fontSize: AppFontSizes.md,
+                        color: subText,
+                        fontFamily: 'Playfair',
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            )
+          else
+            SliverPadding(
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              sliver: SliverGrid(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 14,
+                  mainAxisSpacing: 18,
+                  childAspectRatio: 0.62,
+                ),
+                delegate: SliverChildBuilderDelegate((context, i) {
+                  final book = _books[i];
+                  return GestureDetector(
+                    onTap: () => _goToDetail(book),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Expanded(
+                          child: Stack(
+                            children: [
+                              ClipRRect(
+                                borderRadius: BorderRadius.circular(
+                                  AppSpacing.bookCoverRadius,
+                                ),
+                                child: book.coverUrl.isNotEmpty
+                                    ? Image.network(
+                                        book.coverUrl,
+                                        fit: BoxFit.cover,
+                                        width: double.infinity,
+                                        height: double.infinity,
+                                        errorBuilder: (_, __, ___) =>
+                                            _coverFallback(book),
+                                      )
+                                    : _coverFallback(book),
+                              ),
+                              // Download count badge
+                              Positioned(
+                                bottom: 8,
+                                left: 8,
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 3,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.black.withValues(alpha: 0.7),
+                                    borderRadius: BorderRadius.circular(8),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Icon(
+                                        Icons.download,
+                                        color: Colors.white,
+                                        size: 11,
+                                      ),
+                                      const SizedBox(width: 2),
+                                      Text(
+                                        _fmtCount(book.downloadCount),
+                                        style: const TextStyle(
+                                          color: Colors.white,
+                                          fontSize: AppFontSizes.xs,
+                                          fontWeight: AppFontWeights.semiBold,
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Positioned(
+                                bottom: 8,
+                                right: 8,
+                                child: _readListenTag(book),
+                              ),
+                              // Favourite button
+                              Positioned(
+                                top: 6,
+                                right: 6,
+                                child: GestureDetector(
+                                  onTap: () => _toggleFav(book.id),
+                                  child: Container(
+                                    width: 27,
+                                    height: 27,
+                                    decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(17),
+                                      color: Colors.black.withValues(
+                                        alpha: 0.55,
+                                      ),
+                                    ),
+                                    child: Icon(
+                                      book.isFavorite
+                                          ? Icons.favorite
+                                          : Icons.favorite_border,
+                                      color: book.isFavorite
+                                          ? Colors.red
+                                          : Colors.white,
+                                      size: 22,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 6),
+                        Text(
+                          book.title,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontFamily: 'Playfair',
+                            fontWeight: AppFontWeights.semiBold,
+                            fontSize: AppFontSizes.sm,
+                            color: textColor,
+                          ),
+                        ),
+                        Text(
+                          book.authors,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                            fontSize: AppFontSizes.xs,
+                            color: subText,
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                }, childCount: _books.length),
+              ),
+            ),
+
+          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+        ],
+      ),
+    );
+  }
+
+  Widget _coverFallback(BookModel book) => Container(
+    color: AppColors.primary.withValues(alpha: 0.15),
+    child: Center(
+      child: Padding(
+        padding: const EdgeInsets.all(8),
+        child: Text(
+          book.title,
+          textAlign: TextAlign.center,
+          maxLines: 3,
+          overflow: TextOverflow.ellipsis,
+          style: const TextStyle(
+            fontFamily: 'Playfair',
+            fontWeight: AppFontWeights.bold,
+            fontSize: AppFontSizes.sm,
+            color: AppColors.primary,
+          ),
+        ),
+      ),
+    ),
+  );
+
+  String _fmtCount(int count) {
+    if (count >= 1000000) return '${(count / 1000000).toStringAsFixed(1)}M';
+    if (count >= 1000) return '${(count / 1000).toStringAsFixed(1)}k';
+    return count.toString();
+  }
+}
