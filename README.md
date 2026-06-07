@@ -19,6 +19,57 @@
 
 ---
 
+## Features
+
+### Reading
+- **Multi-format support** — HTML, Plain Text, and EPUB (with text fallback)
+- **5 reading fonts** — Lora, Playfair Display, Merriweather, Libre Baskerville, Crimson Text
+- **Reading progress** — Scroll position auto-saved, restored on reopen
+- **Finish tracking** — Mark books as finished with a single tap at end of text
+- **Dark / Light mode** — Injected CSS for clean WebView reading in both themes
+- **Horizontal progress bar** — Visual progress indicator in text mode
+
+### Audiobooks (LibriVox Integration)
+- **RSS-based chapter loading** — Namespace-aware parser handles all LibriVox feeds
+- **CDN fallback system** — Tries 6 archive.org CDN nodes for reliable playback
+- **Per-chapter progress** — Time-tracked per chapter, visualized in chapter list
+- **Auto-advance** — Seamlessly moves to next chapter on completion
+- **Playback speed control** — 7 speeds: 0.5× to 2.0×
+- **Full-audiobook progress** — Overall percentage tracked across all chapters
+- **Resume playback** — Remembers exact chapter + position
+
+### Library Management
+- **Bookshelf** — Three tabs: Continue, Favourites, Finished
+- **Continue Reading + Listening** — Merged view, sorted by latest activity
+- **Favourites** — Heart any book from any screen
+- **Finished** — Separate read/listened/both badges
+- **Swipe-to-remove** — Close button to remove from continue/favourites/finished
+
+### Search & Discovery
+- **Full-text search** — By title, author, or category
+- **Sort options** — Most Downloaded, Title A–Z
+- **Category grid** — All Gutendex categories in a 2-column chip grid
+- **Category detail** — Per-category book grid with filtering
+
+### Home
+- **Popular books** — Sorted by download count, filterable by category
+- **Recently Added** — Sorted by Gutendex ID (newest), filterable by category
+- **Recommended For You** — Based on categories of books you've interacted with
+- **Continue Reading** — Horizontal scroll with progress bars
+- **Animated nav bar** — Auto-hides on scroll down, reveals on scroll up
+- **Pull-to-refresh** — Re-fetches latest popular and recent pages
+
+### UI / UX
+- **Dark & Light themes** — Persistent toggle, smooth transitions
+- **Playfair Display + Lora** — Serif typography throughout for a premium book feel
+- **Book Detail Carousel** — Infinite scroll PageView with shrink animation for non-active books
+- **Read/Listen tags** — Book/headphone icons on every cover indicating available formats
+- **Download count badges** — Shown on all covers
+- **Finished badge overlay** — Green overlay directly on cover
+- **Custom category chips** — Horizontal scroll, styled selection state
+
+---
+
 ## Screenshots
 
 <table>
@@ -108,57 +159,6 @@
     <td align="center"><img src="app screenshots/27.jpg" width="220"/></td>
   </tr>
 </table>
-
----
-
-## Features
-
-### Reading
-- **Multi-format support** — HTML, Plain Text, and EPUB (with text fallback)
-- **5 reading fonts** — Lora, Playfair Display, Merriweather, Libre Baskerville, Crimson Text
-- **Reading progress** — Scroll position auto-saved, restored on reopen
-- **Finish tracking** — Mark books as finished with a single tap at end of text
-- **Dark / Light mode** — Injected CSS for clean WebView reading in both themes
-- **Horizontal progress bar** — Visual progress indicator in text mode
-
-### Audiobooks (LibriVox Integration)
-- **RSS-based chapter loading** — Namespace-aware parser handles all LibriVox feeds
-- **CDN fallback system** — Tries 6 archive.org CDN nodes for reliable playback
-- **Per-chapter progress** — Time-tracked per chapter, visualized in chapter list
-- **Auto-advance** — Seamlessly moves to next chapter on completion
-- **Playback speed control** — 7 speeds: 0.5× to 2.0×
-- **Full-audiobook progress** — Overall percentage tracked across all chapters
-- **Resume playback** — Remembers exact chapter + position
-
-### Library Management
-- **Bookshelf** — Three tabs: Continue, Favourites, Finished
-- **Continue Reading + Listening** — Merged view, sorted by latest activity
-- **Favourites** — Heart any book from any screen
-- **Finished** — Separate read/listened/both badges
-- **Swipe-to-remove** — Close button to remove from continue/favourites/finished
-
-### Search & Discovery
-- **Full-text search** — By title, author, or category
-- **Sort options** — Most Downloaded, Title A–Z
-- **Category grid** — All Gutendex categories in a 2-column chip grid
-- **Category detail** — Per-category book grid with filtering
-
-### Home
-- **Popular books** — Sorted by download count, filterable by category
-- **Recently Added** — Sorted by Gutendex ID (newest), filterable by category
-- **Recommended For You** — Based on categories of books you've interacted with
-- **Continue Reading** — Horizontal scroll with progress bars
-- **Animated nav bar** — Auto-hides on scroll down, reveals on scroll up
-- **Pull-to-refresh** — Re-fetches latest popular and recent pages
-
-### UI / UX
-- **Dark & Light themes** — Persistent toggle, smooth transitions
-- **Playfair Display + Lora** — Serif typography throughout for a premium book feel
-- **Book Detail Carousel** — Infinite scroll PageView with shrink animation for non-active books
-- **Read/Listen tags** — Book/headphone icons on every cover indicating available formats
-- **Download count badges** — Shown on all covers
-- **Finished badge overlay** — Green overlay directly on cover
-- **Custom category chips** — Horizontal scroll, styled selection state
 
 ---
 
