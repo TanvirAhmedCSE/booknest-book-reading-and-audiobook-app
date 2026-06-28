@@ -36,6 +36,8 @@ class _ReadingScreenState extends State<ReadingScreen> {
   //  WebView (for HTML mode)
   WebViewController? _webViewController;
 
+  String _openedType = '';
+
   @override
   void initState() {
     super.initState();
@@ -59,11 +61,14 @@ class _ReadingScreenState extends State<ReadingScreen> {
     });
     try {
       if (_book.readFormat == 'html') {
+        _openedType = 'html';
         await _loadHtml();
       } else if (_book.readFormat == 'text') {
+        _openedType = 'text';
         await _loadPlainText();
       } else if (_book.readFormat == 'epub') {
         // EPUB: fallback — load as text if available, else show epub in webview
+        _openedType = 'epub';
         await _loadEpubAsText();
       } else {
         setState(() {
@@ -77,6 +82,29 @@ class _ReadingScreenState extends State<ReadingScreen> {
         _errorMsg = 'Failed to load content: $e';
         _isLoading = false;
       });
+    }
+  }
+
+  // To debug
+  IconData get _openedTypeIcon {
+    switch (_openedType) {
+      case 'html':
+        return Icons.language; // HTML
+
+      case 'text':
+        return Icons.text_snippet; // TXT
+
+      case 'epub':
+        return Icons.book; // EPUB
+
+      case 'epub-text':
+        return Icons.description; // EPUB: Text
+
+      case 'epub-webview':
+        return Icons.web; // EPUB: WebView
+
+      default:
+        return Icons.help_outline;
     }
   }
 
@@ -106,8 +134,10 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
   Future<void> _loadEpubAsText() async {
     if (_book.textUrl.isNotEmpty) {
+      _openedType = 'epub-text';
       await _loadPlainText();
     } else {
+      _openedType = 'epub-webview';
       await _loadHtml(urlOverride: _book.epubUrl);
     }
   }
@@ -124,6 +154,26 @@ class _ReadingScreenState extends State<ReadingScreen> {
         onMessageReceived: (msg) {
           final offset = double.tryParse(msg.message) ?? 0.0;
           HiveService.saveReadingProgress(widget.bookId, scrollOffset: offset);
+          // Rebuild UI so _progressLabel updates
+          if (mounted) {
+            setState(() {
+              _book = HiveService.getBook(widget.bookId)!;
+            });
+          }
+        },
+      )
+      // Receive maxScrollHeight from JS
+      ..addJavaScriptChannel(
+        'ScrollHeightTracker',
+        onMessageReceived: (msg) {
+          final maxScroll = double.tryParse(msg.message) ?? 0.0;
+          if (maxScroll > 0) {
+            HiveService.saveReadingProgress(
+              widget.bookId,
+              scrollOffset: _book.scrollOffset,
+              maxScrollExtent: maxScroll,
+            );
+          }
         },
       )
       ..setNavigationDelegate(
@@ -145,7 +195,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
     });
   }
 
-  /// Inject CSS + JS into the loaded HTML page for better reading experience.
+  // Inject CSS + JS into the loaded HTML page for better reading experience.
   Future<void> _injectHtmlStyles(
     WebViewController controller,
     bool isDark,
@@ -157,7 +207,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
     await controller.runJavaScript('''
 (function() {
-  // 1. Fix viewport: disable zoom, fit device width 
+  // 1. Fix viewport: disable zoom, fit device width
   var vp = document.querySelector("meta[name=viewport]");
   if (!vp) {
     vp = document.createElement("meta");
@@ -166,7 +216,7 @@ class _ReadingScreenState extends State<ReadingScreen> {
   }
   vp.content = "width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no";
 
-  // 2. Inject reading styles 
+  // 2. Inject reading styles
   var existing = document.getElementById("_booknest_style");
   if (existing) existing.remove();
   var style = document.createElement("style");
@@ -230,15 +280,30 @@ class _ReadingScreenState extends State<ReadingScreen> {
   ].join(" ");
   document.head.appendChild(style);
 
-  // 3. Scroll tracker (bind only once) 
+  // 3. Scroll tracker (bind only once)
   if (!window._booknestScrollBound) {
     window._booknestScrollBound = true;
+
+    // Send maxScrollHeight once on load (after styles applied, height may change)
+    setTimeout(function() {
+      var maxScroll = document.body.scrollHeight - window.innerHeight;
+      if (maxScroll > 0) {
+        ScrollHeightTracker.postMessage(String(Math.round(maxScroll)));
+      }
+    }, 800);
+
     var lastSent = 0;
     window.addEventListener("scroll", function() {
       var now = Date.now();
       if (now - lastSent > 800) {
         lastSent = now;
         ScrollTracker.postMessage(String(Math.round(window.scrollY)));
+
+        // Also re-send maxScroll on scroll (handles dynamic content)
+        var maxScroll = document.body.scrollHeight - window.innerHeight;
+        if (maxScroll > 0) {
+          ScrollHeightTracker.postMessage(String(Math.round(maxScroll)));
+        }
       }
     }, { passive: true });
   }
@@ -266,16 +331,11 @@ class _ReadingScreenState extends State<ReadingScreen> {
     final maxExtent = _scrollController.position.maxScrollExtent;
     _maxScrollExtent = maxExtent;
 
-    // Save progress
-    HiveService.saveReadingProgress(widget.bookId, scrollOffset: offset);
-
-    // Show finish button near bottom
-    final atBottom = offset >= maxExtent - 20;
-    if (atBottom && !_isBookFinished && !_showFinishButton) {
-      setState(() => _showFinishButton = true);
-    } else if (!atBottom && _showFinishButton) {
-      setState(() => _showFinishButton = false);
-    }
+    HiveService.saveReadingProgress(
+      widget.bookId,
+      scrollOffset: offset,
+      maxScrollExtent: maxExtent,
+    );
   }
 
   Future<void> _finishBook() async {
@@ -299,11 +359,28 @@ class _ReadingScreenState extends State<ReadingScreen> {
 
   String get _progressLabel {
     if (_isBookFinished) return 'Finished';
+
+    // html mode
+    if (_webViewController != null) {
+      if (_book.maxScrollExtent <= 0) return 'Reading...';
+      final pct = ((_book.scrollOffset / _book.maxScrollExtent) * 100)
+          .clamp(0.0, 100.0)
+          .toInt();
+      if (pct >= 99 && !_isBookFinished && !_showFinishButton) {
+        Future.microtask(() => setState(() => _showFinishButton = true));
+      }
+      return '$pct% read';
+    }
+
+    // text mode
     final pct = (_progressValue * 100).toInt();
+    if (pct >= 99 && !_isBookFinished && !_showFinishButton) {
+      Future.microtask(() => setState(() => _showFinishButton = true));
+    }
     return '$pct% read';
   }
 
-  //  Font picker
+  // Font picker
   void _showFontPicker() {
     final isDark = themeModeNotifier.isDark;
     final bg = isDark ? AppColors.darkSurface : AppColors.lightSurface;
@@ -436,7 +513,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
     );
   }
 
-  //  Build
   @override
   Widget build(BuildContext context) {
     final isDark = themeModeNotifier.isDark;
@@ -444,7 +520,6 @@ class _ReadingScreenState extends State<ReadingScreen> {
     final textColor = isDark ? AppColors.darkText : AppColors.lightText;
     final subText = isDark ? AppColors.darkSubText : AppColors.lightSubText;
     final navBar = isDark ? AppColors.darkNavBar : AppColors.lightNavBar;
-    // HTML is now first priority; text is second; epub falls back to webview
     final isHtmlMode = _webViewController != null;
     final isTextMode = !isHtmlMode;
 
@@ -514,7 +589,16 @@ class _ReadingScreenState extends State<ReadingScreen> {
                         ],
                       ),
                     ),
-                    Icon(Icons.share_outlined, color: textColor, size: 22),
+
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: Icon(_openedTypeIcon),
+                          onPressed: () {},
+                        ),
+                        Icon(Icons.share_outlined, color: textColor, size: 22),
+                      ],
+                    ),
                   ],
                 ),
               ),
