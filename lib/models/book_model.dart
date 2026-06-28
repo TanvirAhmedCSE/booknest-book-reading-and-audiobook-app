@@ -86,6 +86,9 @@ class BookModel extends HiveObject {
   @HiveField(23)
   bool listeningFinished;
 
+  @HiveField(24)
+  double maxScrollExtent;
+
   BookModel({
     required this.id,
     required this.title,
@@ -111,6 +114,7 @@ class BookModel extends HiveObject {
     this.totalAudioSeconds = 0.0,
     this.lastListenedAt,
     this.listeningFinished = false,
+    this.maxScrollExtent = 0.0,
   }) : chapterListenedSeconds = chapterListenedSeconds ?? {};
 
   bool get hasAudio => rssUrl != null && rssUrl!.isNotEmpty;
