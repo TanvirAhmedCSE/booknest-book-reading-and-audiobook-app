@@ -467,11 +467,6 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
           Row(
             children: [
               GestureDetector(
-                onTap: () {},
-                child: Icon(Icons.menu, color: textColor, size: 26),
-              ),
-              const SizedBox(width: 20),
-              GestureDetector(
                 onTap: () {
                   themeModeNotifier.toggleTheme();
                   setState(() {});
@@ -878,11 +873,14 @@ class _HomeScreenState extends State<HomeScreen> with WidgetsBindingObserver {
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
+
                 FractionallySizedBox(
-                  widthFactor: (book.scrollOffset > 0 ? 0.3 : 0.0).clamp(
-                    0.0,
-                    1.0,
-                  ),
+                  widthFactor: book.maxScrollExtent > 0
+                      ? (book.scrollOffset / book.maxScrollExtent).clamp(
+                          0.0,
+                          1.0,
+                        )
+                      : 0.0,
                   child: Container(
                     height: 3,
                     decoration: BoxDecoration(
