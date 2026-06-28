@@ -681,16 +681,19 @@ class HiveService {
       book.readingFinished || book.listeningFinished;
 
   //  Progress saves
-
   static Future<void> saveReadingProgress(
     String bookId, {
     required double scrollOffset,
     int? epubChapterIndex,
+    double? maxScrollExtent,
   }) async {
     final book = _box.get(bookId);
     if (book == null) return;
     book.scrollOffset = scrollOffset;
     if (epubChapterIndex != null) book.epubChapterIndex = epubChapterIndex;
+    if (maxScrollExtent != null && maxScrollExtent > 0) {
+      book.maxScrollExtent = maxScrollExtent;
+    }
     book.lastReadAt = DateTime.now();
     await book.save();
   }
