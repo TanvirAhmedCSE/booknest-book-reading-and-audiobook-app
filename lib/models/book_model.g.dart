@@ -1,5 +1,10 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
+
 part of 'book_model.dart';
+
+// **************************************************************************
+// TypeAdapterGenerator
+// **************************************************************************
 
 class BookModelAdapter extends TypeAdapter<BookModel> {
   @override
@@ -19,34 +24,31 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       about: fields[4] as String,
       downloadCount: fields[5] as int,
       coverUrl: fields[6] as String,
-      epubUrl: fields[7] != null ? fields[7] as String : '',
-      textUrl: fields[8] != null ? fields[8] as String : '',
-      htmlUrl: fields[9] != null ? fields[9] as String : '',
-      languages: fields[10] != null
-          ? (fields[10] as List).cast<String>()
-          : const ['en'],
-      copyright: fields[11] != null ? fields[11] as bool : false,
-      isFavorite: fields[12] != null ? fields[12] as bool : false,
-      scrollOffset: fields[13] != null ? fields[13] as double : 0.0,
-      epubChapterIndex: fields[14] != null ? fields[14] as int : 0,
-      lastReadAt: fields[15] != null ? fields[15] as DateTime : null,
-      readingFinished: fields[16] != null ? fields[16] as bool : false,
+      epubUrl: fields[7] as String,
+      textUrl: fields[8] as String,
+      htmlUrl: fields[9] as String,
+      languages: (fields[10] as List).cast<String>(),
+      copyright: fields[11] as bool,
+      isFavorite: fields[12] as bool,
+      scrollOffset: fields[13] as double,
+      epubChapterIndex: fields[14] as int,
+      lastReadAt: fields[15] as DateTime?,
+      readingFinished: fields[16] as bool,
       rssUrl: fields[17] as String?,
-      currentAudioChapter: fields[18] != null ? fields[18] as int : 0,
-      currentAudioPosition: fields[19] != null ? fields[19] as double : 0.0,
-      chapterListenedSeconds: fields[20] != null
-          ? (fields[20] as Map).cast<String, double>()
-          : {},
-      totalAudioSeconds: fields[21] != null ? fields[21] as double : 0.0,
-      lastListenedAt: fields[22] != null ? fields[22] as DateTime : null,
-      listeningFinished: fields[23] != null ? fields[23] as bool : false,
+      currentAudioChapter: fields[18] as int,
+      currentAudioPosition: fields[19] as double,
+      chapterListenedSeconds: (fields[20] as Map?)?.cast<String, double>(),
+      totalAudioSeconds: fields[21] as double,
+      lastListenedAt: fields[22] as DateTime?,
+      listeningFinished: fields[23] as bool,
+      maxScrollExtent: fields[24] as double,
     );
   }
 
   @override
   void write(BinaryWriter writer, BookModel obj) {
     writer
-      ..writeByte(24)
+      ..writeByte(25)
       ..writeByte(0)
       ..write(obj.id)
       ..writeByte(1)
@@ -94,7 +96,9 @@ class BookModelAdapter extends TypeAdapter<BookModel> {
       ..writeByte(22)
       ..write(obj.lastListenedAt)
       ..writeByte(23)
-      ..write(obj.listeningFinished);
+      ..write(obj.listeningFinished)
+      ..writeByte(24)
+      ..write(obj.maxScrollExtent);
   }
 
   @override
