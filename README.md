@@ -92,8 +92,8 @@
 <table>
   <tr>
     <td align="center"><img src="app screenshots/g.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/h.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/i.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/h.jpg" width="220"/><br/><b>Audiobook Listening Screen</b></td>
+    <td align="center"><img src="app screenshots/i.jpg" width="220"/><br/><b>Continue Listening Section</b></td>
   </tr>
 </table>
 
