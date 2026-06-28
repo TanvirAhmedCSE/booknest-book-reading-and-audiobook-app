@@ -81,8 +81,8 @@
   </tr>
   <tr>
     <td align="center"><img src="app screenshots/d.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/e.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/f.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/e.jpg" width="220"/><br/><b>Book Reading Screen</b></td>
+    <td align="center"><img src="app screenshots/f.jpg" width="220"/><br/><b>Continue Reading Section</b></td>
   </tr>
 </table>
 
