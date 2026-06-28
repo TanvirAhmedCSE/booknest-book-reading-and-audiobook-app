@@ -178,15 +178,10 @@ class _BookshelfScreenState extends State<BookshelfScreen>
   }
 
   double _readingPercent(BookModel book) {
-    // Simple proxy: if scroll offset > 0, show based on scrollOffset/0 (we don't know max)
-    // Best we can do without knowing maxScrollExtent is show >0 as "started"
     if (book.readingFinished) return 100.0;
-    if (book.scrollOffset > 0)
-      return 10.0; // placeholder — real % shown in reading_screen
-    return 0.0;
+    if (book.maxScrollExtent <= 0) return 0.0;
+    return ((book.scrollOffset / book.maxScrollExtent) * 100).clamp(0.0, 99.0);
   }
-
-  //  Build
 
   @override
   Widget build(BuildContext context) {
