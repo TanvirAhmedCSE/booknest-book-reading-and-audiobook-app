@@ -140,14 +140,9 @@
     <td align="center"><img src="app screenshots/u.jpg" width="220"/></td>
   </tr>
   <tr>
-    <td align="center"><img src="app screenshots/v.jpg" width="220"/></td>
     <td align="center"><img src="app screenshots/w.jpg" width="220"/></td>
     <td align="center"><img src="app screenshots/x.jpg" width="220"/></td>
-  </tr>
-  <tr>
     <td align="center"><img src="app screenshots/y.jpg" width="220"/></td>
-    <td></td>
-    <td></td>
   </tr>
 </table>
 
