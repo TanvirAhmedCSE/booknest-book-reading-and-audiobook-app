@@ -72,91 +72,82 @@
 
 ## Screenshots
 
+### Book Reading
 <table>
   <tr>
-    <td align="center"><img src="app screenshots/1.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/2.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/3.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/a.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/b.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/c.jpg" width="220"/></td>
   </tr>
   <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
+    <td align="center"><img src="app screenshots/d.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/e.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/f.jpg" width="220"/></td>
+  </tr>
+</table>
+
+---
+
+### Audiobooks
+<table>
+  <tr>
+    <td align="center"><img src="app screenshots/g.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/h.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/i.jpg" width="220"/></td>
+  </tr>
+</table>
+
+---
+
+### Search Books
+<table>
+  <tr>
+    <td align="center"><img src="app screenshots/j.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/k.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/l.jpg" width="220"/></td>
+  </tr>
+</table>
+
+---
+
+### Book Categories
+<table>
+  <tr>
+    <td align="center"><img src="app screenshots/m.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/n.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/o.jpg" width="220"/></td>
+  </tr>
+</table>
+
+---
+
+### Bookshelf
+<table>
+  <tr>
+    <td align="center"><img src="app screenshots/p.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/q.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/r.jpg" width="220"/></td>
+  </tr>
+</table>
+
+---
+
+### Night Mode
+<table>
+  <tr>
+    <td align="center"><img src="app screenshots/s.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/t.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/u.jpg" width="220"/></td>
   </tr>
   <tr>
-    <td align="center"><img src="app screenshots/4.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/5.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/6.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/v.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/w.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/x.jpg" width="220"/></td>
   </tr>
   <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/7.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/8.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/9.jpg" width="220"/></td>
-  </tr>
-  <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/10.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/11.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/12.jpg" width="220"/></td>
-  </tr>
-  <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/13.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/14.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/15.jpg" width="220"/></td>
-  </tr>
-  <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/16.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/17.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/18.jpg" width="220"/></td>
-  </tr>
-  <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/19.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/20.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/21.jpg" width="220"/></td>
-  </tr>
-  <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/22.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/23.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/24.jpg" width="220"/></td>
-  </tr>
-  <tr>
-    <td align="center"></td>
-    <td align="center"></td>
-    <td align="center"></td>
-  </tr>
-  <tr>
-    <td align="center"><img src="app screenshots/25.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/26.jpg" width="220"/></td>
-    <td align="center"><img src="app screenshots/27.jpg" width="220"/></td>
+    <td align="center"><img src="app screenshots/y.jpg" width="220"/></td>
+    <td></td>
+    <td></td>
   </tr>
 </table>
 
